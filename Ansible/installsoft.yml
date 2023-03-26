@@ -1,0 +1,39 @@
+---
+- name: Install soft in RedHat (CentOS 7) and Debian (Ubuntu 22.04)
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Print OS Family
+    debug: var=ansible_os_family
+
+  - block:    # ===CentOS===
+
+      - name: Install soft in RedHat (CentOS 7)
+        ansible.builtin.yum:
+          name:
+          - mc
+          - nano
+          - nmap
+          - nmap-ncat
+          - net-tools
+          state: latest
+
+    when: ansible_os_family == "RedHat"
+
+  - block:    # ===Debian===
+
+      - name: Update all packages
+        ansible.builtin.apt:
+          upgrade: full
+
+      - name: Install soft in Debian (Ubuntu 22.04)
+        ansible.builtin.apt:
+          pkg:
+          - mc
+          - nano
+          - nmap
+          - netcat
+          - net-tools
+
+    when: ansible_os_family == "Debian"
