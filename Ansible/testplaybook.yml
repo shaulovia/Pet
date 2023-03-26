@@ -1,0 +1,13 @@
+---
+- name: Test Playbook
+  hosts: all
+  vars_files:
+   - disks.yml
+
+  tasks:
+    - name: Echo
+      shell: echo {{ disk }}
+      register: test
+
+    - debug:
+        var: test.stdout_lines
