@@ -1,0 +1,24 @@
+---
+- name: Install Macroscop in Debian 10
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Print OS Family
+    debug: var=ansible_os_family
+
+  - block:    # ===Debian===
+
+      - name: Add Macroscop repository
+        ansible.builtin.shell: wget -O - http://packages.macroscop.com/deb/install/macroscop-deps-debian.sh | bash
+        register: showdebian
+
+      - debug:
+          var: showdebian
+
+      - name: Install Macroscop
+        ansible.builtin.apt:
+          name: macroscop
+          state: latest
+
+    when: ansible_os_family == "Debian"

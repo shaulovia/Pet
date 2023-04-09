@@ -1,0 +1,29 @@
+---
+- name: Install Macroscop in RedHat (CentOS 7)
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Print OS Family
+    debug: var=ansible_os_family
+
+      - name: Install soft in RedHat (CentOS 7)
+        ansible.builtin.yum:
+          name:
+          - wget
+          state: latest
+
+      - name: Add Macroscop repository
+        ansible.builtin.shell: wget -O - http://packages.macroscop.com/rpm/install/macroscop-deps-centos.sh | bash
+        register: showcentos
+
+      - debug:
+          var: showcentos
+
+      - name: Install Macroscop in RedHat (CentOS 7)
+        ansible.builtin.yum:
+          name:
+          - macroscop
+          state: latest
+        environment:
+          ACCEPT_EULA: 'y'

@@ -1,0 +1,17 @@
+---
+- name: Install Macroscop in Astra Linux CE 2.12
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Add Macroscop repository
+    ansible.builtin.shell: wget -O - http://packages.macroscop.com/deb/install/macroscop-deps-astra-ce-2.12.sh | bash
+    register: showastrace
+
+  - debug:
+      var: showastrace
+
+  - name: Install Macroscop
+    ansible.builtin.apt:
+      name: macroscop
+      state: latest
